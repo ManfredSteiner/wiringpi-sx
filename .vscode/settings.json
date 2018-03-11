@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "stdexcept": "cpp",
+        "ratio": "cpp",
+        "system_error": "cpp",
+        "type_traits": "cpp",
+        "*.ipp": "cpp",
+        "iosfwd": "cpp"
+    }
+}
