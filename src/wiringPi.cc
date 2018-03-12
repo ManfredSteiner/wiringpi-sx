@@ -68,23 +68,30 @@ namespace wiringpi {
             mode[written] = 0;
 
             ::wiringPiClearFailureString();
+            int res;
             if (strcmp("wpi", mode) == 0) {
-                int res = ::wiringPiSetup();
-                if (res < 0) {
-                    std::ostringstream os;
-                    os << "setup fails";
-                    if (::wiringPiGetLastFailureString()[0] != 0) {
-                        os << " (" << ::wiringPiGetLastFailureString() << ")";
-                    }
-                    throw WpiExecutionError(__LINE__, os.str().c_str());
-                }
-                napi_value rv;
-                status = napi_create_int32(env, res, &rv);
-                if (status != napi_ok) throw WpiRuntimeError(__LINE__);
-                return rv;
+                res = ::wiringPiSetup();
+            } else if (strcmp("gpio", mode) == 0) {
+                res = ::wiringPiSetupGpio();
+            } else if (strcmp("sys", mode) == 0) {
+                res = ::wiringPiSetupSys();
+            } else if (strcmp("phys", mode) == 0) {
+                res = ::wiringPiSetupPhys();
             } else {
                 throw WpiLogicError(__LINE__, "invalid value for mode");
             }
+            if (res < 0) {
+                std::ostringstream os;
+                os << "setup fails";
+                if (::wiringPiGetLastFailureString()[0] != 0) {
+                    os << " (" << ::wiringPiGetLastFailureString() << ")";
+                }
+                throw WpiExecutionError(__LINE__, os.str().c_str());
+            }
+            napi_value rv;
+            status = napi_create_int32(env, res, &rv);
+            if (status != napi_ok) throw WpiRuntimeError(__LINE__);
+            return rv;
         }
         catch (const WpiRuntimeError& re)   { throwWpiRuntimeError(env, __FILE__, re); }
         catch (const WpiLogicError& ex)     { throwWpiLogicError(env, __FILE__, ex); }

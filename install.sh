@@ -1,4 +1,3 @@
-#!/bin/sh
 
 check_ok() {
   if [ $? != 0 ]; then

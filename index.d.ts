@@ -13,11 +13,18 @@ declare module 'wiringpi-sx' {
      *    see the pins page (http://wiringpi.com/pins/) for a table
      *    which maps the wiringPi pin number to the Broadcom GPIO pin number to the physical location on the edge connector.
      *    This function needs to be called with root privileges.
-     * @param {string} mode use 'wpi' to call the native library function wiringPiSetup()
+     *    See also {@link http://wiringpi.com/reference/setup}.
+     * @param {string} mode use 'wpi', 'gpio', 'sys' or 'phys.
+     *    Use 'wpi' to call the native library function wiringPiSetup().
+     *    Use 'gpio' to call the native library function wiringPiSetupGpio(), which initialises wiringPi but uses the /sys/class/gpio interface
+     *    rather than accessing the hardware directly.
+     *    Use 'sys' to call the native library function wiringPiSetupSys().
+     *    Use 'phys' to call the native library function wiringPiSetupPhys().
+     
      * @returns {number}  error code if v1 mode otherwise always returns 0
      * @throws ERR_WPI_RUNTIME, ERR_WPI_LOGICERROR, ERR_WPI_EXECUTIONERROR
      */
-    export function setup (mode: 'wpi'): number;
+    export function setup (mode: 'wpi' | 'gpio' | 'sys' | 'phys'): number;
 
     
     /**
